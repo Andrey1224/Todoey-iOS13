@@ -40,28 +40,7 @@ class CategoryViewController: UITableViewController {
         
         return cell1
     }
-    
-    
-    
-    
-    //MARK: - Data Manipulation Methods
-    
-    
-    
-    
-    
-    
-    
-    //MARK: - Add New Categories
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
         
@@ -70,8 +49,6 @@ class CategoryViewController: UITableViewController {
         let alert = UIAlertController(title: "Add New Todoey Item", message: "", preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add Item", style: .default) { (acttion) in
-            //waht will happen once user clicks the Add Item button on a uialert
-            
             
             
             let newItem = Category(context: self.context)
@@ -79,33 +56,22 @@ class CategoryViewController: UITableViewController {
             self.categoriesArray.append(newItem)
             
             self.saveCategories()
-            
-            
-            
-            
+          
         }
         alert.addAction(action)
         
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Create New Item"
             textField = alertTextField
-            
-            
-            
-            
+        
         }
-        
-        
+       
         present(alert, animated: true, completion: nil)
     }
     
-    
-    
     func saveCategories() {
         
-        
         do{
-            
             
             try context.save()
         } catch {
@@ -113,7 +79,6 @@ class CategoryViewController: UITableViewController {
         }
         self.tableView.reloadData()
     }
-    
     
     func loadCategories() {
         
@@ -129,7 +94,24 @@ class CategoryViewController: UITableViewController {
     
     //MARK: - TableView Delegate Methods
     
-
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        performSegue(withIdentifier: "goToItems", sender: self)
+        
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let destinationVC = segue.destination as! ToDoListViewController
+        
+        if let indexPath = tableView.indexPathForSelectedRow {
+            destinationVC.selectedCategory = categoriesArray[indexPath.row]
+            
+            
+        }
+        
+    }
     
     
 }
